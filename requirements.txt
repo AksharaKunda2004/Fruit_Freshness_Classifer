@@ -1,0 +1,9 @@
+mlflow==1.26.1
+
+scikit-learn==1.1.1
+matplotlib==3.5.3
+seaborn==0.12.0
+pandas==1.4.4
+numpy==1.23.2
+argparse
+apache-airflow==2.3.4
