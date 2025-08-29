@@ -60,4 +60,4 @@ jobs:
 
 
       - name: Run training
-        run: python train.py --data ./data
+        run: python scripts/train.py --data ./data
