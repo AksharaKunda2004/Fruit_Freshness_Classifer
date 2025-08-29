@@ -54,9 +54,14 @@ jobs:
           chmod 600 ~/.kaggle/kaggle.json
 
       # ✅ Download dataset from Kaggle
+            # ✅ Download dataset from Kaggle
       - name: Download dataset
         run: |
           kaggle datasets download -d sriramr/fruits-fresh-and-rotten-for-classification -p ./data --unzip
+          mv ./data/dataset/train ./data/train
+          mv ./data/dataset/test ./data/test
+          rm -rf ./data/dataset   # cleanup
+
 
 
       - name: Run training
