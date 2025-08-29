@@ -33,15 +33,31 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
+
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      # ✅ Install Kaggle API
+      - name: Install Kaggle API
+        run: pip install kaggle
+
+      # ✅ Configure Kaggle credentials from GitHub Secrets
+      - name: Configure Kaggle
+        run: |
+          mkdir -p ~/.kaggle
+          echo "{\"username\":\"${{ secrets.KAGGLE_USERNAME }}\",\"key\":\"${{ secrets.KAGGLE_KEY }}\"}" > ~/.kaggle/kaggle.json
+          chmod 600 ~/.kaggle/kaggle.json
+
+      # ✅ Download dataset from Kaggle
       - name: Download dataset
         run: |
-          wget https://my-dataset-url/data.zip
-          unzip data.zip -d data/
+          kaggle datasets download -d sriramr/fruits-fresh-and-rotten-for-classification -p ./data --unzip
+
+
       - name: Run training
         run: python train.py --data ./data
