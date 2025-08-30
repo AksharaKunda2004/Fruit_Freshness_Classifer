@@ -3,16 +3,20 @@ version: '3.8'
 services:
   mlflow-tracking:
     image: python:3.8
+    container_name: mlflow-tracking
     ports:
       - "5000:5000"
     volumes:
       - ./mlflow:/mlflow
     command: >
       bash -c "pip install mlflow==1.26.1 &&
-               mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri /mlflow --default-artifact-root /mlflow"
-  
+               mlflow server --host 0.0.0.0 --port 5000
+               --backend-store-uri sqlite:///mlflow/mlflow.db
+               --default-artifact-root /mlflow"
+
   training:
     build: .
+    container_name: training-service
     volumes:
       - ./data:/app/data
       - ./models:/app/models
@@ -22,12 +26,18 @@ services:
     depends_on:
       - mlflow-tracking
     command: >
-      bash -c "python scripts/train.py --dataset-path /app/data --epochs 50 --batch-size 32 --img-size 224"
-  
+      bash -c "python scripts/train.py 
+               --dataset-path /app/data 
+               --epochs 50 
+               --batch-size 32 
+               --img-size 224"
+
   airflow:
     image: apache/airflow:2.3.4
+    container_name: airflow
+    restart: always
     environment:
-      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
     volumes:
@@ -36,9 +46,20 @@ services:
       - ./scripts:/opt/airflow/scripts
     ports:
       - "8080:8080"
-    command: >
-      bash -c "airflow db init &&
-               airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com &&
-               airflow webserver & airflow scheduler"
     depends_on:
       - mlflow-tracking
+    command: >
+      bash -c "airflow db init &&
+               airflow users create 
+                 --username admin 
+                 --password admin 
+                 --firstname Admin 
+                 --lastname User 
+                 --role Admin 
+                 --email admin@example.com &&
+               airflow webserver & airflow scheduler"
+
+volumes:
+  mlflow:
+  data:
+  models:

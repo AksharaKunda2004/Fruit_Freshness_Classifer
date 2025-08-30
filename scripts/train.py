@@ -14,6 +14,8 @@ import mlflow
 import mlflow.tensorflow
 import argparse
 from datetime import datetime
+from mlflow.tracking import MlflowClient
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train fruit classification model')
@@ -359,6 +361,21 @@ def main():
         print(f"Weighted Precision: {precision:.4f}")
         print(f"Weighted Recall: {recall:.4f}")
         print(f"Weighted F1-Score: {f1:.4f}")
+
+        print(f"\nAdditional Metrics:")
+        print(f"Weighted Precision: {precision:.4f}")
+        print(f"Weighted Recall: {recall:.4f}")
+        print(f"Weighted F1-Score: {f1:.4f}")
+
+    with open("metrics_report.txt", "w") as f:
+        f.write(f"Test Accuracy: {test_accuracy:.4f}\n")
+        f.write(f"Test Loss: {test_loss:.4f}\n")
+        f.write(f"Weighted Precision: {precision:.4f}\n")
+        f.write(f"Weighted Recall: {recall:.4f}\n")
+        f.write(f"Weighted F1-Score: {f1:.4f}\n")
+
+    mlflow.log_artifact("metrics_report.txt")
+
 
 if __name__ == "__main__":
     main()
