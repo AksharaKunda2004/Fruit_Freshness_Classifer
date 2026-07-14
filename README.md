@@ -33,19 +33,19 @@ This project is an end-to-end Deep Learning and MLOps application that classifie
 
 ```
 MLOP_FINAL_PROJECT/
-|--app.py
-|-- Dockerfile
-|-- docker-compose.yml
-|-- requirements.txt
-|-- scripts/
-|-- dags/
-|-- model/
-|-- data/
-|-- README.md
+-app.py
+- Dockerfile
+- docker-compose.yml
+- requirements.txt
+- scripts/
+- dags/
+- model/
+- data/
+- README.md
 
 ---
 
-## Installation
+**## Installation**
 
 ```bash
 git clone https://github.com/AksharaKunda2004/Fruit_Freshness_Classifier.git
@@ -58,7 +58,7 @@ streamlit run app.py
 
 ---
 
-## Workflow
+**## Workflow**
 
 1. Data Collection
 2. Data Preprocessing
@@ -70,7 +70,7 @@ streamlit run app.py
 
 ---
 
-## Future Improvements
+**## Future Improvements**
 
 - Support for multiple fruit categories
 - Cloud Deployment (AWS/Azure/GCP)
@@ -79,7 +79,7 @@ streamlit run app.py
 
 ---
 
-## Author
+**## Author**
 
 **Akshara Kunda**
 
